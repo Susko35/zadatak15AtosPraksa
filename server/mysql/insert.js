@@ -50,8 +50,10 @@ router.post('/task/', (req, res) => {
     var status = req.body.status;
     var kompleksnost = req.body.kompleksnost;
     var vrijeme = req.body.vrijeme;
+
+    //sql smalldatetime valjda da nema mikrosekunde
     var datetimeStart = req.body.datetimeStart;
-    var datetimeEnd = req.body.datumKraj;
+    var datetimeEnd = req.body.datetimeEnd;
 
     var entries = [id, naziv, opis, tip, status, kompleksnost, vrijeme, datetimeStart, datetimeEnd];
 
