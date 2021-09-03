@@ -17,7 +17,7 @@ router.get('/users/all', (req, res) => {
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "empty" });
             res.end();
         }
 
@@ -33,7 +33,7 @@ router.get('/users/', (req, res) => {
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "notfound" });
             res.end();
         }
 
