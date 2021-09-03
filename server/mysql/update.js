@@ -41,43 +41,45 @@ router.put('/user/', (req, res) => {
     }
 });
 
-//update task by id
+//update task by naziv
 router.put('/task/', (req, res) => {
-    var id = req.body.id;
-    var naziv = req.body.opis;
-    var opis = req.body.opis;
-    var tip = req.body.tip;
-    var status = req.body.status;
-    var kompleksnost = req.body.kompleksnost;
-    var vrijeme = req.body.vrijeme;
+    var naziv = req.body.naziv_zadatka;
+    var opis = req.body.opis_zadatka;
+    var tip = req.body.tip_zadatka;
+    var status = req.body.status_zadatka;
+    var kompleksnost = req.body.kompleksnost_zadatka;
+    var vrijeme = req.body.potroseno_vrijeme;
 
-    //sql smalldatetime valjda da nema mikrosekunde
-    var datetimeStart = req.body.datetimeStart;
-    var datetimeEnd = req.body.datetimeEnd;
+    var datetimeStart = req.body.pocetni_datum;
+    var datetimeEnd = req.body.zavrsni_datum;
 
-    var entries = [naziv, opis, tip, status, kompleksnost, vrijeme, datetimeStart, datetimeEnd];
+    var entries = [opis, tip, status, kompleksnost, vrijeme, datetimeStart, datetimeEnd];
 
-    if (tip != 'task' && tip != 'bug') {
-        res.json({ 'response': 'ERROR', 'error': 'incorrect type entry' });
+    if (tip != 'Task' && tip != 'Bug') {
+        res.json({ "response": "ERROR", "error": "incorrect type entry" });
         res.end();
     }
-    else if (status != 'open' && status != 'closed' && status != 'process') {
-        res.json({ 'response': 'ERROR', 'error': 'incorrect status entry' });
+    else if (status != 'Otvoren' && status != 'Zatvoren' && status != 'U tijeku') {
+        res.json({ "response": "ERROR", "error": "incorrect status entry" });
         res.end();
     }
-    else if (id > 999) {
-        res.json({ 'response': 'ERROR', 'error': 'id number size' });
+    else if (naziv > 999) {
+        res.json({ "response": "ERROR", "error": "naziv number size" });
+        res.end();
+    }
+    else if (kompleksnost > 5 || kompleksnost < 1) {
+        res.json({ "response": "ERROR", "error": "incorrect complexity entry" });
         res.end();
     }
     else {
-        connection.query('UPDATE `tasks` SET `naziv` = ?, `opis` = ?, `tip` = ?, `status` = ?, `kompleksnost` = ?, `vrijeme` = ?, `datetimeStart` = ?, `datetimeEnd` = ? WHERE `tasks`.`id` = ' + id, entries, function (error, rows, fields) {
+        connection.query('UPDATE `zadaci` SET `opis_zadatka` = ?, `tip_zadatka` = ?, `status_zadatka` = ?, `kompleksnost_zadatka` = ?, `potroseno_vrijeme` = ?, `pocetni_datum` = ?, `zavrsni_datum` = ? WHERE `zadaci`.`naziv_zadatka` = ' + naziv, entries, function (error, rows, fields) {
             console.log(rows);
             if (error || rows.affectedRows === 0) {
-                res.json({ 'response': 'ERROR', error });
+                res.json({ "response": "ERROR", error });
                 res.end();
             }
             else {
-                res.json({ 'response': 'success', rows });
+                res.json({ "response": "success", rows });
                 res.end();
             }
 

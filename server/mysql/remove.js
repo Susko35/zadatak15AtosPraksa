@@ -31,10 +31,10 @@ router.delete('/user/', (req, res) => {
     }
 });
 
-//delete from tasks by id
+//delete from tasks by naziv
 router.delete('/task/', (req, res) => {
-    if (req.body.id) {
-        connection.query('DELETE FROM `tasks` WHERE `tasks`.`id` = ' + req.body.id, function (error, rows, fields) {
+    if (req.body.naziv_zadatka) {
+        connection.query('DELETE FROM `zadaci` WHERE `zadaci`.`naziv_zadatka` = ' + req.body.naziv_zadatka, function (error, rows, fields) {
             console.log(rows);
             if (error || rows.affectedRows === 0) {
                 res.json({ "response": "ERROR", error });
@@ -48,7 +48,7 @@ router.delete('/task/', (req, res) => {
         });
     }
     else {
-        res.json({ "response": "ERROR", "error": "id not sent" });
+        res.json({ "response": "ERROR", "error": "naziv not sent" });
         res.end();
     }
 });
