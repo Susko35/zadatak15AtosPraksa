@@ -62,7 +62,7 @@ router.post('/task/', (req, res) => {
         res.end();
     }
     else if(status != 'open' && status != 'closed' && status != 'process') {
-        res.json({ "response": "ERROR", "error": "id number size" });
+        res.json({ "response": "ERROR", "error": "incorrect status entry" });
         res.end();
     }
     else if(id > 999) {
