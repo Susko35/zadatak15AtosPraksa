@@ -1,3 +1,4 @@
+const { query, response } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -45,25 +46,39 @@ router.post('/user/', (req, res) => {
 router.post('/assign/', (req, res) => {
     var oib = req.body.oib;
     var naziv_zadatka = req.body.naziv_zadatka;
-    if (oib > 99999 ||naziv_zadatka > 9999) {
+
+    if (oib > 99999 || naziv_zadatka > 9999) {
         res.json({ "response": "ERROR", "error": "oib or name number size" });
         res.end();
     }
     else {
-        connection.query('INSERT INTO `users_zadaci` (`oib`, `naziv_zadatka`) VALUES (?,?)', [oib, naziv_zadatka], function (error, rows, fields) {
-            console.log(rows);
-            if (error || rows.affectedRows === 0) {
-                res.json({ "response": "ERROR", error });
-                res.end();
+        connection.query('SELECT * FROM `users_zadaci` WHERE `oib` = ? AND `naziv_zadatka` = ?', [oib, naziv_zadatka], function (error, rows, fields) {
+            if (rows.length > 0) {
+                res.json({ "response":"ERROR", "error":"Already exists" })
             }
             else {
-                res.json({ "response": "success", rows });
-                res.end();
+                connection.query('INSERT INTO `users_zadaci` (`oib`, `naziv_zadatka`) VALUES (?,?)', [oib, naziv_zadatka], function (error, rows, fields) {
+                    if (error || rows.affectedRows === 0) {
+                        res.json({ "response": "ERROR", error });
+                        res.end();
+                    }
+                    else {
+                        res.json({ "response": "success", rows });
+                        console.log(rows);
+                        res.end();
+                    }
+
+                });
+
             }
 
         });
     }
+
+
 });
+
+
 
 //insert into tasks
 router.post('/task/', (req, res) => {
