@@ -17,7 +17,7 @@ router.get('/users/all', (req, res) => {
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "empty" });
             res.end();
         }
 
@@ -33,7 +33,7 @@ router.get('/users/', (req, res) => {
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "notfound" });
             res.end();
         }
 
@@ -42,30 +42,30 @@ router.get('/users/', (req, res) => {
 
 //return all tasks json
 router.get('/tasks/all', (req, res) => {
-    connection.query('SELECT * FROM tasks', function (error, rows, fields) {
+    connection.query('SELECT * FROM zadaci', function (error, rows, fields) {
         console.log(rows);
         if (rows.length > 0) {
             res.json(rows);
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "empty" });
             res.end();
         }
 
     });
 });
 
-//return task by id json
-router.get('/users/', (req, res) => {
-    connection.query('SELECT * FROM `tasks` WHERE `tasks`.`id` = '+req.body.id, function (error, rows, fields) {
+//return task by name json
+router.get('/tasks/', (req, res) => {
+    connection.query('SELECT * FROM `zadaci` WHERE `zadaci`.`naziv_zadatka` = ' + req.body.naziv_zadatka, function (error, rows, fields) {
         console.log(rows);
         if (rows.length > 0) {
             res.json(rows);
             res.end();
         }
         else {
-            res.json({ "response": "ERROR" });
+            res.json({ "response": "ERROR", "error": "notfound" });
             res.end();
         }
 

@@ -33,3 +33,9 @@ app.use('/remove', remove);
 
 const update = require('./mysql/update');
 app.use('/update', update); 
+
+const radno_mjestoBroj = require('./reports/radno_mjesto');
+app.use('/reports', radno_mjestoBroj); 
+
+const time_open = require('./reports/time_open');
+app.use('/reports', time_open); 
