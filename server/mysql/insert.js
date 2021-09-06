@@ -21,12 +21,36 @@ router.post('/user/', (req, res) => {
         res.json({ "response": "ERROR", "error": "incorrect level entry" });
         res.end();
     }
-    else if(oib > 99999) {
+    else if (oib > 99999) {
         res.json({ "response": "ERROR", "error": "oib number size" });
         res.end();
     }
     else {
-        connection.query('INSERT INTO `users` (`oib`, `ime`, `prezime`, `radno_mjesto`, `level`) VALUES (?,?,?,?,?)', [oib, ime, prezime, radno_mjesto, level] , function (error, rows, fields) {
+        connection.query('INSERT INTO `users` (`oib`, `ime`, `prezime`, `radno_mjesto`, `level`) VALUES (?,?,?,?,?)', [oib, ime, prezime, radno_mjesto, level], function (error, rows, fields) {
+            console.log(rows);
+            if (error || rows.affectedRows === 0) {
+                res.json({ "response": "ERROR", error });
+                res.end();
+            }
+            else {
+                res.json({ "response": "success", rows });
+                res.end();
+            }
+
+        });
+    }
+});
+
+//assign task to user
+router.post('/assign/', (req, res) => {
+    var oib = req.body.oib;
+    var naziv_zadatka = req.body.naziv_zadatka;
+    if (oib > 99999 ||naziv_zadatka > 9999) {
+        res.json({ "response": "ERROR", "error": "oib or name number size" });
+        res.end();
+    }
+    else {
+        connection.query('INSERT INTO `users_zadaci` (`oib`, `naziv_zadatka`) VALUES (?,?)', [oib, naziv_zadatka], function (error, rows, fields) {
             console.log(rows);
             if (error || rows.affectedRows === 0) {
                 res.json({ "response": "ERROR", error });
@@ -60,20 +84,20 @@ router.post('/task/', (req, res) => {
         res.json({ "response": "ERROR", "error": "incorrect type entry" });
         res.end();
     }
-    else if(status != 'Otvoren' && status != 'Zatvoren' && status != 'U tijeku') {
+    else if (status != 'Otvoren' && status != 'Zatvoren' && status != 'U tijeku') {
         res.json({ "response": "ERROR", "error": "incorrect status entry" });
         res.end();
     }
-    else if(naziv > 999) {
+    else if (naziv > 999) {
         res.json({ "response": "ERROR", "error": "naziv number size" });
         res.end();
     }
-    else if(kompleksnost > 5 || kompleksnost < 1) {
+    else if (kompleksnost > 5 || kompleksnost < 1) {
         res.json({ "response": "ERROR", "error": "incorrect complexity entry" });
         res.end();
     }
     else {
-        connection.query('INSERT INTO `zadaci` (`naziv_zadatka`, `opis_zadatka`, `tip_zadatka`, `status_zadatka`, `kompleksnost_zadatka`, `potroseno_vrijeme`, `pocetni_datum`, `zavrsni_datum`) VALUES (?,?,?,?,?,?,?,?)', entries , function (error, rows, fields) {
+        connection.query('INSERT INTO `zadaci` (`naziv_zadatka`, `opis_zadatka`, `tip_zadatka`, `status_zadatka`, `kompleksnost_zadatka`, `potroseno_vrijeme`, `pocetni_datum`, `zavrsni_datum`) VALUES (?,?,?,?,?,?,?,?)', entries, function (error, rows, fields) {
             console.log(rows);
             if (error || rows.affectedRows === 0) {
                 res.json({ "response": "ERROR", error });
