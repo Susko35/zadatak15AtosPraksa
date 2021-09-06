@@ -39,3 +39,6 @@ app.use('/reports', radno_mjestoBroj);
 
 const time_open = require('./reports/time_open');
 app.use('/reports', time_open); 
+
+const utroseno_vrijeme = require('./reports/utroseno_vrijeme');
+app.use('/reports', utroseno_vrijeme); 
