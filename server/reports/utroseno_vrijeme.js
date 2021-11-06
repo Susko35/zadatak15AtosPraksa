@@ -11,10 +11,14 @@ var connection = mysql.createConnection({
 
 //list radna mjesta po broju
 router.get('/utroseno_vrijeme', (req, res) => {
-    connection.query('SELECT * FROM `zadaci` WHERE `zavrsni_datum`-`pocetni_datum` = (SELECT MAX(`zavrsni_datum`-`pocetni_datum`) FROM `zadaci`)', function (error, rows, fields) {
+
+    var oib = req.body.oib;
+
+    connection.query('SELECT `naziv_zadatka` AS naziv FROM `users_zadaci` WHERE `oib` = ?; SELECT SUM(`potroseno_vrijeme`) FROM `zadaci` WHERE `zadaci`.`naziv_zadatka` = naziv',oib, function (error, rows, fields) {
         console.log(rows);
-        if (rows.length > 0) {
-            res.json(rows);
+
+        if (true) {
+            res.json({rows});
             res.end();
         }
         else {
