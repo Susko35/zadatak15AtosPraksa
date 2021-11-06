@@ -1,4 +1,4 @@
-# zadatak15
+# zadatak15 Nedovršeno
 
 Pokretanje servera
 promijeniti imena database na ime baze na koju se spaja (na localhostu)
